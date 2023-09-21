@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class WayPoint : MonoBehaviour {
-    void Start() {
+    [SerializeField] GameObject towerPrefab;
+    [SerializeField] bool isPlaceable = true;
 
-    }
-
-    void Update() {
-
+    private void OnMouseDown() {
+        if (isPlaceable)
+            Instantiate(towerPrefab, gameObject.transform.position, Quaternion.identity);
+        isPlaceable = false;
     }
 }
