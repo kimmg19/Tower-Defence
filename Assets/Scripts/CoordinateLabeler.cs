@@ -7,19 +7,43 @@ using UnityEngine.Tilemaps;
 
 [ExecuteAlways]
 public class CoordinateLabeler : MonoBehaviour {
+
+    [SerializeField] Color defaultColor = Color.white;
+    [SerializeField] Color blockedColor = Color.gray;
     TextMeshPro label;
     Vector2Int coordinates = new Vector2Int();
-    
+    WayPoint wayPoint;
 
     void Awake() {
         label = GetComponent<TextMeshPro>();
+        label.enabled = false;
         DiaplayCoordinates();
+        wayPoint = GetComponentInParent<WayPoint>();
     }
+
     void Update() {
         if (!Application.isPlaying) {
             DiaplayCoordinates();
             UpdateObjectName();
         }
+        ColorCoordinates();
+        ToggleLables();
+    }
+
+    private void ToggleLables() {
+        if(Input.GetKeyDown(KeyCode.C)) {
+            label.enabled = !label.IsActive(); 
+        }
+    }
+
+    void ColorCoordinates() {
+        if (wayPoint.IsPlaceable) {
+            label.color = defaultColor;
+        } else {
+            label.color = blockedColor;
+        }
+        
+
     }
 
     void DiaplayCoordinates() {
@@ -29,6 +53,6 @@ public class CoordinateLabeler : MonoBehaviour {
         label.text = coordinates.x + ", " + coordinates.y;
     }
     void UpdateObjectName() {
-        transform.parent.name=coordinates.ToString();
+        transform.parent.name = coordinates.ToString();
     }
 }
