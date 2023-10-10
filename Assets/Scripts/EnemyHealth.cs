@@ -4,8 +4,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour {
-    [SerializeField] int maxHitPoints = 5;
-    [SerializeField] int currentHitPoints = 0;
+    [SerializeField] int maxHitPoints = 5;          //적 최대 체력
+    [SerializeField] int difficultyRamp = 1;
+    int currentHitPoints = 0;      //적 현재 체력
 
     Enemy enemy;
     void OnEnable() {
@@ -16,13 +17,13 @@ public class EnemyHealth : MonoBehaviour {
     }
 
     void OnParticleCollision(GameObject other) {
-        print("충돌");
         ProcessHit();
     }
 
     void ProcessHit() {
         currentHitPoints--;
         if (currentHitPoints <= 0) {
+            maxHitPoints += difficultyRamp;
             gameObject.SetActive(false);
             enemy.RewardGold();
         }
